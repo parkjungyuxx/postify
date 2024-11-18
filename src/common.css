@@ -1,0 +1,21 @@
+.sideNavBtn {
+  border: transparent;
+  font-size: 18px;
+  padding: 12px;
+  padding-left: 38px;
+  text-align: left;
+  gap: 12px;
+}
+
+.sideNavBtn svg {
+  margin-right: 12px;
+}
+
+.sideNavBtn.active {
+  background-color: #dfdfde;
+  font-weight: bold;
+}
+
+.logoText {
+  font-weight: 900;
+}

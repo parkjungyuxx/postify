@@ -4,6 +4,7 @@ import router from "./router/router.js";
 import { useState } from "react";
 import UserContext from "./userContext.js";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 function App() {

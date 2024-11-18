@@ -6,9 +6,12 @@
   src: url(./fonts/PretendardVariable.ttf);
 }
 
+* {
+  font-family: "Pretendard Variable";
+}
 body {
   margin: 0;
-  font-family: "Pretendard Variable"
+  font-family: "Pretendard Variable";
   /* -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; */
 }
