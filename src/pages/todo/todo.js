@@ -1,14 +1,8 @@
 import Header from "../home/header";
 import SideNavBar from "../home/sideNavBar";
 
-
 const Todo = () => {
-  return (
-    <div>
-        <Header />
-        <SideNavBar />
-    </div>
-  );
+  return <div>todo임</div>;
 };
 
 export default Todo;

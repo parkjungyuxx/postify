@@ -18,18 +18,25 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+    children: [
+      {
+        path: "todo",
+        element: <Todo />,
+      },
+      {
+        path: "post",
+        element: <Post />,
+      },
+      {
+        path: "calender",
+        element: <Calender />,
+      },
+    ],
   },
+
   {
-    path: "/todo",
-    element: <Todo />,
-  },
-  {
-    path: "/post",
-    element: <Post />,
-  },
-  {
-    path: "/calender",
-    element: <Calender />,
+    path: "*",
+    element: <p>없는 페이지 입니다~</p>,
   },
 ]);
 

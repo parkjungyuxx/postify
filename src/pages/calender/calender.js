@@ -4,8 +4,7 @@ import SideNavBar from "../home/sideNavBar"
 const Calender = () => {
     return (
         <div>
-            <Header />
-            <SideNavBar />
+            calender임
         </div>
     )
 }

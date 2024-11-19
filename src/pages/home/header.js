@@ -2,7 +2,7 @@ import UserContext from "../../userContext.js";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useContext } from "react";
 import Button from "react-bootstrap/Button";
-import "../../common.css";
+import "../../css/common.css";
 import NavDropdown from "react-bootstrap/NavDropdown";
 
 const Header = () => {
@@ -23,26 +23,10 @@ const Header = () => {
   };
   return (
     <div style={{ display: "flex" }}>
-      <div
-        style={{
-          backgroundColor: "#FF8343",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minWidth: "240px",
-        }}
-      >
-        <h1 className="logoText">Postify</h1>
+      <div className="header-logo-container">
+        <h1 className="header-logo-text">Postify</h1>
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "right",
-          padding: "24px",
-          backgroundColor: "#F1DEC6",
-          width: "100%",
-        }}
-      >
+      <div className="header-nav">
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontWeight: "400", fontSize: "14px" }}>Admin</div>
           <NavDropdown

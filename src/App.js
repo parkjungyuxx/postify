@@ -6,14 +6,15 @@ import UserContext from "./userContext.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-
 function App() {
   const [user, setUser] = useState("");
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
-      <RouterProvider router={router} />
-    </UserContext.Provider>
+    <div className="App">
+      <UserContext.Provider value={{ user, setUser }}>
+        <RouterProvider router={router} />
+      </UserContext.Provider>
+    </div>
   );
 }
 
