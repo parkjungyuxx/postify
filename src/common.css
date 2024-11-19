@@ -1,3 +1,11 @@
+.sideNavBar {
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+    height: 100vh;
+    background-color: #FF8343;
+}
+
 .sideNavBtn {
   border: transparent;
   font-size: 18px;
@@ -5,6 +13,7 @@
   padding-left: 38px;
   text-align: left;
   gap: 12px;
+  background-color: #FF8343;
 }
 
 .sideNavBtn svg {
@@ -12,7 +21,7 @@
 }
 
 .sideNavBtn.active {
-  background-color: #dfdfde;
+  background-color: #FB773C;
   font-weight: bold;
 }
 

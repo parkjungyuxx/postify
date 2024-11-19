@@ -17,15 +17,7 @@ const SideNavBar = () => {
     navigate(`/${route}`);
   };
   return (
-    <nav
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        maxWidth: "240px",
-        height: "100vh",
-        backgroundColor: "#eeeeee",
-      }}
-    >
+    <nav className="sideNavBar">
       <button
         onClick={() => handleNavigate("")}
         className={`sideNavBtn ${activeBtn === "" ? "active" : ""}`}

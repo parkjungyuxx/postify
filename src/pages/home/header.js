@@ -25,7 +25,7 @@ const Header = () => {
     <div style={{ display: "flex" }}>
       <div
         style={{
-          backgroundColor: "#eeeeee",
+          backgroundColor: "#FF8343",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -39,7 +39,7 @@ const Header = () => {
           display: "flex",
           justifyContent: "right",
           padding: "24px",
-          backgroundColor: "#F5F7F8",
+          backgroundColor: "#F1DEC6",
           width: "100%",
         }}
       >
