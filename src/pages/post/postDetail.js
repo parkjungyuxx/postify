@@ -6,14 +6,20 @@ const PostDetail = () => {
   const location = useLocation();
   const state = location.state;
 
-  const postList = state.postList;
+  const { postList, setPostList } = state;
   const post = postList[postId];
 
   const navigate = useNavigate();
 
   return (
     <div className="post-detail">
-      <button onClick={()=>{navigate("/post")}}>목록으로</button>
+      <button
+        onClick={() => {
+          navigate("/post");
+        }}
+      >
+        목록으로
+      </button>
       <div className="post-card">
         <div>
           <p
