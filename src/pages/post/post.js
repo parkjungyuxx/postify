@@ -1,6 +1,3 @@
-import Header from "../home/header";
-import SideNavBar from "../home/sideNavBar";
-import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
@@ -9,9 +6,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faComment,
   faFaceGrinTongueWink,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { PostContext } from "../../context";
 
 const Post = () => {
   const [show, setShow] = useState(false);
@@ -20,19 +19,19 @@ const Post = () => {
 
   const [postTitle, setPostTitle] = useState("");
   const [postText, setPostText] = useState("");
+  const { postList, setPostList } = useContext(PostContext);
 
-  const [postList, setPostList] = useState(() => {
-    const savedPosts = localStorage.getItem("postList");
-    return savedPosts ? JSON.parse(savedPosts) : [];
-  });
   useEffect(() => {
     localStorage.setItem("postList", JSON.stringify(postList));
   }, [postList]);
+
+  const [조회수, 조회수관리] = useState();
 
   const handleChange = () => {
     const newPost = {
       title: postTitle,
       text: postText,
+      eyes: 조회수
     };
 
     const copy = [...postList];
@@ -43,7 +42,6 @@ const Post = () => {
   };
 
   const navigate = useNavigate();
-  const params = useParams();
 
   return (
     <div className="post-container">
@@ -59,6 +57,9 @@ const Post = () => {
             <th>
               조회수
               <FontAwesomeIcon icon={faFaceGrinTongueWink} />
+            </th>
+            <th>
+              <FontAwesomeIcon icon={faTrash} />
             </th>
           </tr>
         </thead>
@@ -79,6 +80,16 @@ const Post = () => {
                 <td>{postList[i].title}</td>
                 <td>1</td>
                 <td>2</td>
+                <button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    const copy = [...postList];
+                    copy.splice(i, 1);
+                    setPostList(copy);
+                  }}
+                >
+                  삭제
+                </button>
               </tr>
             );
           })}
@@ -107,8 +118,6 @@ const AddPostModal = ({
   show,
   handleClose,
   setPostTitle,
-  postTitle,
-  postText,
   setPostText,
   handleChange,
 }) => {

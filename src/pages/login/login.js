@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../../userContext.js";
+import { UserContext } from "../../context.js";
 import "../../css/login.css";
 
 const Login = () => {
   const [inputValue, setInputValue] = useState("");
-  const { setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   // inputValue를 User로 설정 후 home으로 이동

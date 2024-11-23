@@ -1,6 +1,6 @@
 import { useNavigate, Outlet } from "react-router-dom";
 import { useEffect, useContext } from "react";
-import UserContext from "../../userContext.js";
+import {UserContext} from "../../context.js";
 import Header from "./header.js";
 import SideNavBar from "./sideNavBar.js";
 import { height } from "@fortawesome/free-brands-svg-icons/fa42Group";
