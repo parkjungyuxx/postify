@@ -22,7 +22,7 @@ const PostDetail = () => {
   const post = postList[postId];
 
   const { comment, setComment } = useContext(CommentContext);
-  let savingComment = [];
+  const [savingComment, setSavingComment] = useState("");
 
   const navigate = useNavigate();
 
@@ -43,9 +43,14 @@ const PostDetail = () => {
 
   const addComment = (event) => {
     event.preventDefault();
-    const copy = [...comment];
-    copy.push(savingComment);
-    setComment(copy);
+    setComment((prevComments) => {
+      const currentComments = prevComments[postId] || []; // 기존 댓글 가져오기
+      return {
+        ...prevComments,
+        [postId]: [...currentComments, savingComment], // 새 댓글 추가
+      };
+    });
+    setSavingComment(""); // 입력 필드 초기화
   };
 
   return (
@@ -92,21 +97,27 @@ const PostDetail = () => {
         >
           <input
             onChange={(event) => {
-              savingComment = event.target.value;
+              const comment = event.target.value;
+              setSavingComment(comment);
             }}
           />
           <button>댓글 추가</button>
         </form>
         <div className="comment-container">
-          {comment.map((el, i) => {
+          {(comment[postId] || []).map((el, i) => {
             return (
-              <div className="comment-card">
+              <div className="comment-card" key={i}>
                 {el}
                 <button
                   onClick={() => {
-                    const copy = [...comment];
-                    copy.splice(i, 1);
-                    setComment(copy);
+                    setComment((prevComments) => {
+                      const currentComments = [...(prevComments[postId] || [])];
+                      currentComments.splice(i, 1);
+                      return {
+                        ...prevComments,
+                        [postId]: currentComments,
+                      };
+                    });
                   }}
                 >
                   삭제
@@ -114,6 +125,13 @@ const PostDetail = () => {
               </div>
             );
           })}
+          <button
+            onClick={() => {
+              console.log(comment);
+            }}
+          >
+            console
+          </button>
         </div>
       </div>
     </div>

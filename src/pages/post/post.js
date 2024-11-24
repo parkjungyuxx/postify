@@ -10,12 +10,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { PostContext } from "../../context";
+import { PostContext, UserContext } from "../../context";
 
 const Post = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const {user} = useContext(UserContext)
 
   const [postTitle, setPostTitle] = useState("");
   const [postText, setPostText] = useState("");
@@ -50,6 +52,7 @@ const Post = () => {
           <tr>
             <th>PostID</th>
             <th>제목</th>
+            <th>작성자</th>
             <th>
               댓글수
               <FontAwesomeIcon icon={faComment} />
@@ -78,6 +81,7 @@ const Post = () => {
               >
                 <td>{i + 1}</td>
                 <td>{postList[i].title}</td>
+                <td>{user}</td>
                 <td>1</td>
                 <td>2</td>
                 <button

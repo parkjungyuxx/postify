@@ -14,7 +14,7 @@ function App() {
     return savedPosts ? JSON.parse(savedPosts) : []; // 로컬 스토리지에 데이터가 없으면 빈 배열 반환
   });
 
-  const [comment, setComment] = useState([]);
+  const [comment, setComment] = useState({});
 
   return (
     <div className="App">
