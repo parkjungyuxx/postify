@@ -43,6 +43,7 @@ const PostDetail = () => {
 
   const addComment = (event) => {
     event.preventDefault();
+    if (!savingComment) return alert("댓글을 입력해주세요");
     setComment((prevComments) => {
       const currentComments = prevComments[postId] || []; // 기존 댓글 가져오기
       return {
@@ -93,9 +94,11 @@ const PostDetail = () => {
         <form
           onSubmit={(event) => {
             addComment(event);
+            setSavingComment("");
           }}
         >
           <input
+            value={savingComment}
             onChange={(event) => {
               const comment = event.target.value;
               setSavingComment(comment);
@@ -125,13 +128,6 @@ const PostDetail = () => {
               </div>
             );
           })}
-          <button
-            onClick={() => {
-              console.log(comment);
-            }}
-          >
-            console
-          </button>
         </div>
       </div>
     </div>
