@@ -49,3 +49,17 @@ table {
   width: 70%;
   margin-top: 120px;
 }
+
+.comment-container {
+  width: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 70%;
+  border: 1px solid black;
+}

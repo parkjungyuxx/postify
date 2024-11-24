@@ -22,6 +22,7 @@ const PostDetail = () => {
   const post = postList[postId];
 
   const { comment, setComment } = useContext(CommentContext);
+  let savingComment = [];
 
   const navigate = useNavigate();
 
@@ -40,11 +41,11 @@ const PostDetail = () => {
     setShow(false);
   };
 
-  const addComment = () => {
-    const newComment = {
-      id: postId,
-      text: comment,
-    };
+  const addComment = (event) => {
+    event.preventDefault();
+    const copy = [...comment];
+    copy.push(savingComment);
+    setComment(copy);
   };
 
   return (
@@ -84,12 +85,36 @@ const PostDetail = () => {
       </div>
       <div className="comment-box">
         <div>Comment</div>
-        <form onSubmit={()=>{addComment()}}>
-          <input onChange={(event)=>{
-            const comment = event.target.value;
-          }} />
+        <form
+          onSubmit={(event) => {
+            addComment(event);
+          }}
+        >
+          <input
+            onChange={(event) => {
+              savingComment = event.target.value;
+            }}
+          />
           <button>댓글 추가</button>
         </form>
+        <div className="comment-container">
+          {comment.map((el, i) => {
+            return (
+              <div className="comment-card">
+                {el}
+                <button
+                  onClick={() => {
+                    const copy = [...comment];
+                    copy.splice(i, 1);
+                    setComment(copy);
+                  }}
+                >
+                  삭제
+                </button>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
