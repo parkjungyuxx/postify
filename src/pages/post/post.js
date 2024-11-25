@@ -39,7 +39,6 @@ const Post = () => {
     const newPost = {
       title: postTitle,
       text: postText,
-      views: 0,
     };
 
     const copy = [...postList];
@@ -60,6 +59,13 @@ const Post = () => {
       delete updatedCounts[i];
       return updatedCounts;
     });
+  };
+
+  const handleViewCount = (postId) => {
+    setViewCount((prevViewCount) => ({
+      ...prevViewCount,
+      [postId]: (prevViewCount[postId] || 0) + 1,
+    }));
   };
 
   const navigate = useNavigate();
@@ -90,26 +96,28 @@ const Post = () => {
             return (
               <tr
                 className="table-row"
-                id="i"
+                key={i}
                 style={{ cursor: "pointer" }}
                 onClick={(event) => {
-                  
-                  const postId = i;
-                  navigate(`/post/${postId}`, { state: { i, postList } });
+                  handleViewCount(i);
+                  navigate(`/post/${i}`, { state: { i, postList } });
                 }}
               >
-                <td>{i + 1}</td>
+                <td>{i}</td>
                 <td>{postList[i].title}</td>
                 <td>{user}</td>
                 <td>{commentCount[i] || 0}</td>
-                <td>{postList[i].views}</td>
-                <button
-                  onClick={(event) => {
-                    deleteComment(event, i);
-                  }}
-                >
-                  삭제
-                </button>
+                <td>{viewCount[i] || 0}</td>
+                <td>
+                  {" "}
+                  <button
+                    onClick={(event) => {
+                      deleteComment(event, i);
+                    }}
+                  >
+                    삭제
+                  </button>
+                </td>
               </tr>
             );
           })}

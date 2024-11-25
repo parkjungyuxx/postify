@@ -4,6 +4,7 @@ import {
   CommentCountContext,
   PostContext,
   CommentContext,
+  ViewCountContext,
 } from "../../context";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -33,6 +34,7 @@ const PostDetail = () => {
   const [postText, setPostText] = useState("");
 
   const { commentCount, setCommentCount } = useContext(CommentCountContext);
+  const { viewCount } = useContext(ViewCountContext);
 
   const handleChange = () => {
     const updatedPost = {
@@ -60,7 +62,7 @@ const PostDetail = () => {
 
       return {
         ...prevComments,
-        [postId]: [...currentComments, savingComment],
+        [postId]: updatedComments,
       };
     });
     setSavingComment("");
@@ -70,7 +72,7 @@ const PostDetail = () => {
     setComment((prevComments) => {
       const currentComments = [...(prevComments[postId] || [])];
       currentComments.splice(commentIndex, 1);
-      
+
       setCommentCount((prevCounts) => ({
         ...prevCounts,
         [postId]: currentComments.length,
@@ -83,6 +85,10 @@ const PostDetail = () => {
     });
   };
 
+  if (!post) {
+    return <div>게시글을 찾을 수 없습니다.</div>; // 안전한 처리
+  }
+
   return (
     <div className="post-detail" style={{ display: "flex" }}>
       <button
@@ -94,8 +100,8 @@ const PostDetail = () => {
       </button>
       <div style={{ display: "flex" }}>
         {console.log(commentCount[postId] || [])}
-        <p>댓글 수: {(commentCount[postId] || [])}</p>
-        <p>조회수 1</p>
+        <p>댓글 수: {commentCount[postId] || 0}</p>
+        <p>조회수: {viewCount[postId] || 0}</p>
       </div>
       <div className="post-card">
         <div>
@@ -143,7 +149,7 @@ const PostDetail = () => {
                 {el}
                 <button
                   onClick={() => {
-                    deleteComment()
+                    deleteComment();
                   }}
                 >
                   삭제

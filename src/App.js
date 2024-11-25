@@ -22,7 +22,7 @@ function App() {
 
   const [comment, setComment] = useState({});
   const [commentCount, setCommentCount] = useState({});
-  const [viewCount, setViewCount] = useState(0);
+  const [viewCount, setViewCount] = useState({});
 
   return (
     <div className="App">
