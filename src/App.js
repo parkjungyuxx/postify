@@ -2,7 +2,13 @@ import "./App.css";
 import { RouterProvider } from "react-router-dom";
 import router from "./router/router.js";
 import { useState } from "react";
-import { UserContext, PostContext, CommentContext } from "./context.js";
+import {
+  UserContext,
+  PostContext,
+  CommentContext,
+  CommentCountContext,
+  ViewCountContext,
+} from "./context.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -15,14 +21,22 @@ function App() {
   });
 
   const [comment, setComment] = useState({});
+  const [commentCount, setCommentCount] = useState({});
+  const [viewCount, setViewCount] = useState(0);
 
   return (
     <div className="App">
       <UserContext.Provider value={{ user, setUser }}>
         <PostContext.Provider value={{ postList, setPostList }}>
-          <CommentContext.Provider value={{ comment, setComment }}>
-            <RouterProvider router={router} />
-          </CommentContext.Provider>
+          <ViewCountContext.Provider value={{ viewCount, setViewCount }}>
+            <CommentCountContext.Provider
+              value={{ commentCount, setCommentCount }}
+            >
+              <CommentContext.Provider value={{ comment, setComment }}>
+                <RouterProvider router={router} />
+              </CommentContext.Provider>
+            </CommentCountContext.Provider>
+          </ViewCountContext.Provider>
         </PostContext.Provider>
       </UserContext.Provider>
     </div>

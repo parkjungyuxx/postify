@@ -1,10 +1,13 @@
 import React, { useContext, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { PostContext } from "../../context";
+import {
+  CommentCountContext,
+  PostContext,
+  CommentContext,
+} from "../../context";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import { CommentContext } from "../../context";
 
 const PostDetail = () => {
   const { postId } = useParams();
@@ -29,6 +32,8 @@ const PostDetail = () => {
   const [postTitle, setPostTitle] = useState("");
   const [postText, setPostText] = useState("");
 
+  const { commentCount, setCommentCount } = useContext(CommentCountContext);
+
   const handleChange = () => {
     const updatedPost = {
       title: postTitle,
@@ -45,13 +50,37 @@ const PostDetail = () => {
     event.preventDefault();
     if (!savingComment) return alert("댓글을 입력해주세요");
     setComment((prevComments) => {
-      const currentComments = prevComments[postId] || []; // 기존 댓글 가져오기
+      const currentComments = prevComments[postId] || [];
+      const updatedComments = [...currentComments, savingComment];
+
+      setCommentCount((prevCounts) => ({
+        ...prevCounts,
+        [postId]: updatedComments.length,
+      }));
+
       return {
         ...prevComments,
-        [postId]: [...currentComments, savingComment], // 새 댓글 추가
+        [postId]: [...currentComments, savingComment],
       };
     });
-    setSavingComment(""); // 입력 필드 초기화
+    setSavingComment("");
+  };
+
+  const deleteComment = (commentIndex) => {
+    setComment((prevComments) => {
+      const currentComments = [...(prevComments[postId] || [])];
+      currentComments.splice(commentIndex, 1);
+      
+      setCommentCount((prevCounts) => ({
+        ...prevCounts,
+        [postId]: currentComments.length,
+      }));
+
+      return {
+        ...prevComments,
+        [postId]: currentComments,
+      };
+    });
   };
 
   return (
@@ -64,7 +93,8 @@ const PostDetail = () => {
         목록으로
       </button>
       <div style={{ display: "flex" }}>
-        <p>댓글수 1</p>
+        {console.log(commentCount[postId] || [])}
+        <p>댓글 수: {(commentCount[postId] || [])}</p>
         <p>조회수 1</p>
       </div>
       <div className="post-card">
@@ -113,14 +143,7 @@ const PostDetail = () => {
                 {el}
                 <button
                   onClick={() => {
-                    setComment((prevComments) => {
-                      const currentComments = [...(prevComments[postId] || [])];
-                      currentComments.splice(i, 1);
-                      return {
-                        ...prevComments,
-                        [postId]: currentComments,
-                      };
-                    });
+                    deleteComment()
                   }}
                 >
                   삭제

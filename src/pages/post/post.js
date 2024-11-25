@@ -10,14 +10,20 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { PostContext, UserContext } from "../../context";
+import {
+  PostContext,
+  UserContext,
+  CommentCountContext,
+  ViewCountContext,
+} from "../../context";
 
 const Post = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const {user} = useContext(UserContext)
+  const { user } = useContext(UserContext);
+  const { commentCount, setCommentCount } = useContext(CommentCountContext);
 
   const [postTitle, setPostTitle] = useState("");
   const [postText, setPostText] = useState("");
@@ -27,13 +33,13 @@ const Post = () => {
     localStorage.setItem("postList", JSON.stringify(postList));
   }, [postList]);
 
-  const [조회수, 조회수관리] = useState();
+  const { viewCount, setViewCount } = useContext(ViewCountContext);
 
   const handleChange = () => {
     const newPost = {
       title: postTitle,
       text: postText,
-      eyes: 조회수
+      views: 0,
     };
 
     const copy = [...postList];
@@ -41,6 +47,19 @@ const Post = () => {
     setPostList(copy);
     setPostTitle("");
     setPostText("");
+  };
+
+  const deleteComment = (event, i) => {
+    event.stopPropagation();
+    const copy = [...postList];
+    copy.splice(i, 1);
+    setPostList(copy);
+
+    setCommentCount((prevCounts) => {
+      const updatedCounts = { ...prevCounts };
+      delete updatedCounts[i];
+      return updatedCounts;
+    });
   };
 
   const navigate = useNavigate();
@@ -74,7 +93,7 @@ const Post = () => {
                 id="i"
                 style={{ cursor: "pointer" }}
                 onClick={(event) => {
-                  console.log(i);
+                  
                   const postId = i;
                   navigate(`/post/${postId}`, { state: { i, postList } });
                 }}
@@ -82,14 +101,11 @@ const Post = () => {
                 <td>{i + 1}</td>
                 <td>{postList[i].title}</td>
                 <td>{user}</td>
-                <td>1</td>
-                <td>2</td>
+                <td>{commentCount[i] || 0}</td>
+                <td>{postList[i].views}</td>
                 <button
                   onClick={(event) => {
-                    event.stopPropagation();
-                    const copy = [...postList];
-                    copy.splice(i, 1);
-                    setPostList(copy);
+                    deleteComment(event, i);
                   }}
                 >
                   삭제
