@@ -86,7 +86,7 @@ const PostDetail = () => {
   };
 
   if (!post) {
-    return <div>게시글을 찾을 수 없습니다.</div>; // 안전한 처리
+    return <div>게시글을 찾을 수 없습니다.</div>; 
   }
 
   return (
