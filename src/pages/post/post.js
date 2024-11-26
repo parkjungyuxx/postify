@@ -30,7 +30,10 @@ const Post = () => {
   const { postList, setPostList } = useContext(PostContext);
 
   useEffect(() => {
-    localStorage.setItem("postList", JSON.stringify(postList));
+    localStorage.setItem(
+      "postList",
+      JSON.stringify(postList || { postList: [] })
+    );
   }, [postList]);
 
   const { viewCount, setViewCount } = useContext(ViewCountContext);
@@ -48,19 +51,24 @@ const Post = () => {
     setPostText("");
   };
 
-  const deleteComment = (event, i) => {
+  const deletePost = (event, i) => {
     event.stopPropagation();
+  
+    const postId = (currentPage - 1) * postsPerPage + i;
     const copy = [...postList];
-    copy.splice(i, 1);
+    copy.splice(postId, 1);
     setPostList(copy);
+  
+    const startIndex = (currentPage - 1) * postsPerPage;
+    const endIndex = Math.min(currentPage * postsPerPage, copy.length);
+    setCurrentPosts(copy.slice(startIndex, endIndex));
 
-    setCommentCount((prevCounts) => {
-      const updatedCounts = { ...prevCounts };
-      delete updatedCounts[i];
-      return updatedCounts;
-    });
+    if (copy.length <= startIndex && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
+  
   const handleViewCount = (postId) => {
     setViewCount((prevViewCount) => ({
       ...prevViewCount,
@@ -69,6 +77,18 @@ const Post = () => {
   };
 
   const navigate = useNavigate();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 5;
+  const totalPages = Math.ceil(postList.length / postsPerPage);
+
+  const [currentPosts, setCurrentPosts] = useState([]);
+
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * postsPerPage;
+    const endIndex = Math.min(currentPage * postsPerPage, postList.length);
+    setCurrentPosts(postList.slice(startIndex, endIndex));
+  }, [currentPage, postList]);
 
   return (
     <div className="post-container">
@@ -92,27 +112,30 @@ const Post = () => {
           </tr>
         </thead>
         <tbody>
-          {postList.map((el, i) => {
+          {currentPosts.map((post, i) => {
+            const postId = (currentPage - 1) * postsPerPage + i;
+            if (!postList[postId]) return null;
+            
             return (
               <tr
                 className="table-row"
-                key={i}
+                key={postId}
                 style={{ cursor: "pointer" }}
                 onClick={(event) => {
-                  handleViewCount(i);
-                  navigate(`/post/${i}`, { state: { i, postList } });
+                  handleViewCount(postId);
+                  navigate(`/post/${postId}`);
                 }}
               >
-                <td>{i}</td>
-                <td>{postList[i].title}</td>
+                <td>{postId + 1}</td>
+                <td>{postList[postId].title}</td>
                 <td>{user}</td>
-                <td>{commentCount[i] || 0}</td>
-                <td>{viewCount[i] || 0}</td>
+                <td>{commentCount[postId] || 0}</td>
+                <td>{viewCount[postId] || 0}</td>
                 <td>
                   {" "}
                   <button
                     onClick={(event) => {
-                      deleteComment(event, i);
+                      deletePost(event);
                     }}
                   >
                     삭제
@@ -124,7 +147,11 @@ const Post = () => {
         </tbody>
       </table>
       <div className="post-bottom">
-        pagenation{" "}
+        <PageNation
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
         <Button onClick={handleShow} className="add-post-btn" variant="warning">
           글 쓰기
         </Button>
@@ -198,6 +225,26 @@ const AddPostModal = ({
         </Modal.Footer>
       </Modal>
     </>
+  );
+};
+
+const PageNation = ({ totalPages, setCurrentPage, currentPage }) => {
+  return (
+    <div>
+      <button>이전</button>
+      {Array.from({ length: totalPages }, (_, i) => (
+        <button
+          key={i}
+          className={currentPage === i + 1 ? "active" : ""}
+          onClick={() => {
+            setCurrentPage(i + 1);
+          }}
+        >
+          {i + 1}
+        </button>
+      ))}
+      <button>다음</button>
+    </div>
   );
 };
 
