@@ -1,10 +1,11 @@
 import "../../css/todo.css";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const Todo = () => {
   const [todoList, setTodoList] = useState([]);
   const [todo, setTodo] = useState("");
   const [text, setText] = useState();
+  const inputRef = useRef(null);
 
   const addTodoList = (event) => {
     event.preventDefault();
@@ -58,9 +59,11 @@ const Todo = () => {
 
 const ListBox = ({ el, i, handleDelete, todoList, setTodoList }) => {
   let [isEditing, setIsEditing] = useState(false);
+  const editInput = useRef(null);
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
+    setTimeout(() => editInput.current.focus(), 0);
   };
 
   const [editText, setEditText] = useState("");
@@ -70,7 +73,8 @@ const ListBox = ({ el, i, handleDelete, todoList, setTodoList }) => {
     setEditText(editingText);
   };
 
-  const finishEdit = () => {
+  const finishEdit = (event) => {
+    event.preventDefault();
     const copy = [...todoList];
     copy.splice(i, 1, editText);
     setTodoList(copy);
@@ -98,8 +102,14 @@ const ListBox = ({ el, i, handleDelete, todoList, setTodoList }) => {
       </div>
     </div>
   ) : (
-    <form className="todo-list" onSubmit={finishEdit()}>
+    <form
+      className="todo-list"
+      onSubmit={(event) => {
+        finishEdit(event);
+      }}
+    >
       <input
+        ref={editInput}
         className="edit-input"
         onChange={(event) => {
           handleEditText(event);
