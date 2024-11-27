@@ -53,12 +53,12 @@ const Post = () => {
 
   const deletePost = (event, i) => {
     event.stopPropagation();
-  
+
     const postId = (currentPage - 1) * postsPerPage + i;
     const copy = [...postList];
     copy.splice(postId, 1);
     setPostList(copy);
-  
+
     const startIndex = (currentPage - 1) * postsPerPage;
     const endIndex = Math.min(currentPage * postsPerPage, copy.length);
     setCurrentPosts(copy.slice(startIndex, endIndex));
@@ -68,7 +68,6 @@ const Post = () => {
     }
   };
 
-  
   const handleViewCount = (postId) => {
     setViewCount((prevViewCount) => ({
       ...prevViewCount,
@@ -115,7 +114,7 @@ const Post = () => {
           {currentPosts.map((post, i) => {
             const postId = (currentPage - 1) * postsPerPage + i;
             if (!postList[postId]) return null;
-            
+
             return (
               <tr
                 className="table-row"
@@ -229,21 +228,56 @@ const AddPostModal = ({
 };
 
 const PageNation = ({ totalPages, setCurrentPage, currentPage }) => {
+  const pagesPerGroup = 5;
+  const [currentGroup, setCurrentGroup] = useState(1);
+
+  const totalGroup = Math.ceil(totalPages / pagesPerGroup);
+  const startPage = (currentGroup - 1) * pagesPerGroup + 1;
+  const endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
+
+  const pageButtons = Array.from(
+    { length: endPage - startPage + 1 },
+    (_, i) => {
+      const pageNumber = startPage + i;
+      return (
+        <button
+          key={pageNumber}
+          className={currentPage === pageNumber ? "active" : ""}
+          onClick={() => setCurrentPage(pageNumber)}
+        >
+          {pageNumber}
+        </button>
+      );
+    }
+  );
+
+  const prevPages = () => {
+    if (startPage === 1) return;
+    setCurrentGroup(currentGroup - 1);
+  };
+
+  const nextPages = () => {
+    if (endPage === totalPages) return;
+    setCurrentGroup(currentGroup + 1);
+  };
+
   return (
     <div>
-      <button>이전</button>
-      {Array.from({ length: totalPages }, (_, i) => (
-        <button
-          key={i}
-          className={currentPage === i + 1 ? "active" : ""}
-          onClick={() => {
-            setCurrentPage(i + 1);
-          }}
-        >
-          {i + 1}
-        </button>
-      ))}
-      <button>다음</button>
+      <button
+        onClick={() => {
+          prevPages();
+        }}
+      >
+        이전
+      </button>
+      {pageButtons}
+      <button
+        onClick={() => {
+          nextPages();
+        }}
+      >
+        다음
+      </button>
     </div>
   );
 };
