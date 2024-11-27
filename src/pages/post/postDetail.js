@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import {
   CommentCountContext,
@@ -35,6 +35,9 @@ const PostDetail = () => {
 
   const { commentCount, setCommentCount } = useContext(CommentCountContext);
   const { viewCount } = useContext(ViewCountContext);
+
+  const [isCommentEditing, setIsCommentEditing] = useState(false);
+  const commentEditInput = useRef(null);
 
   const handleChange = () => {
     const updatedPost = {
@@ -85,8 +88,31 @@ const PostDetail = () => {
     });
   };
 
+  const [editIndex, setEditIndex] = useState(null);
+
+  const handleEdit = (i) => {
+    setEditIndex(i);
+  };
+
+  const handleEditComplete = (i) => {
+    setEditIndex(null);
+    const copy = [...comment[postId]];
+
+    console.log(copy);
+
+    const newComment = commentEditInput.current.value;
+    copy.splice(i, 1, newComment);
+    setComment((prevComments) => ({
+      ...prevComments,
+      [postId]: copy,
+    }));
+    console.log("comment", comment);
+    console.log("copy", copy);
+    console.log("new", newComment);
+  };
+
   if (!post) {
-    return <div>게시글을 찾을 수 없습니다.</div>; 
+    return <div>게시글을 찾을 수 없습니다.</div>;
   }
 
   return (
@@ -99,7 +125,6 @@ const PostDetail = () => {
         목록으로
       </button>
       <div style={{ display: "flex" }}>
-        {console.log(commentCount[postId] || [])}
         <p>댓글 수: {commentCount[postId] || 0}</p>
         <p>조회수: {viewCount[postId] || 0}</p>
       </div>
@@ -143,17 +168,35 @@ const PostDetail = () => {
           <button>댓글 추가</button>
         </form>
         <div className="comment-container">
-          {(comment[postId] || []).map((el, i) => {
+          {(comment[postId] || []).map((comment, i) => {
             return (
               <div className="comment-card" key={i}>
-                {el}
-                <button
-                  onClick={() => {
-                    deleteComment();
-                  }}
+                {editIndex === i ? (
+                  <input
+                    ref={commentEditInput}
+                    className="comment-edit-input"
+                  />
+                ) : (
+                  <p>{comment}</p>
+                )}
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  삭제
-                </button>
+                  <button
+                    onClick={() => {
+                      editIndex === i ? handleEditComplete(i) : handleEdit(i);
+                    }}
+                  >
+                    {editIndex === i ? "완료" : "수정"}
+                  </button>
+                  <button
+                    onClick={() => {
+                      deleteComment(i);
+                    }}
+                  >
+                    삭제
+                  </button>
+                </div>
               </div>
             );
           })}

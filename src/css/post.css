@@ -67,3 +67,7 @@ table {
 .active {
   background-color: greenyellow;
 }
+
+.comment-edit-input {
+  width: 460px;
+}
