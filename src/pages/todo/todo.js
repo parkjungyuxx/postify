@@ -1,8 +1,15 @@
 import "../../css/todo.css";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Todo = () => {
-  const [todoList, setTodoList] = useState([]);
+  const [todoList, setTodoList] = useState(() => {
+    const savedTodoList = localStorage.getItem("todo");
+    return savedTodoList ? JSON.parse(savedTodoList) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("todo", JSON.stringify(todoList || { todoList: [] }));
+  }, [todoList]);
   const [todo, setTodo] = useState("");
   const [text, setText] = useState();
   const inputRef = useRef(null);

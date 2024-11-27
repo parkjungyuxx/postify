@@ -12,8 +12,6 @@ import Form from "react-bootstrap/Form";
 
 const PostDetail = () => {
   const { postId } = useParams();
-  const location = useLocation();
-
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => {
@@ -36,8 +34,11 @@ const PostDetail = () => {
   const { commentCount, setCommentCount } = useContext(CommentCountContext);
   const { viewCount } = useContext(ViewCountContext);
 
-  const [isCommentEditing, setIsCommentEditing] = useState(false);
   const commentEditInput = useRef(null);
+
+  useEffect(() => {
+    localStorage.setItem("comment", JSON.stringify(comment || { comment: {} }));
+  }, [comment]);
 
   const handleChange = () => {
     const updatedPost = {

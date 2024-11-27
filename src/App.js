@@ -10,17 +10,22 @@ import {
   ViewCountContext,
 } from "./context.js";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 
 function App() {
   const [user, setUser] = useState("");
 
   const [postList, setPostList] = useState(() => {
     const savedPosts = localStorage.getItem("postList");
-    return savedPosts ? JSON.parse(savedPosts) : []; // 로컬 스토리지에 데이터가 없으면 빈 배열 반환
+    return savedPosts ? JSON.parse(savedPosts) : []; 
   });
 
-  const [comment, setComment] = useState({});
+
+
+  const [comment, setComment] = useState(() => {
+    const savedComment = localStorage.getItem("comment");
+    return savedComment ? JSON.parse(savedComment) : {};
+  });
   const [commentCount, setCommentCount] = useState({});
   const [viewCount, setViewCount] = useState({});
 
