@@ -9,7 +9,6 @@ const Login = () => {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  // inputValue를 User로 설정 후 home으로 이동
   const handleNavigate = () => {
     setUser(inputValue);
     navigate("/", { state: { user: inputValue } });

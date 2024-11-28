@@ -11,8 +11,6 @@ const Todo = () => {
     localStorage.setItem("todo", JSON.stringify(todoList || { todoList: [] }));
   }, [todoList]);
   const [todo, setTodo] = useState("");
-  const [text, setText] = useState();
-  const inputRef = useRef(null);
 
   const addTodoList = (event) => {
     event.preventDefault();
@@ -67,13 +65,12 @@ const Todo = () => {
 const ListBox = ({ el, i, handleDelete, todoList, setTodoList }) => {
   let [isEditing, setIsEditing] = useState(false);
   const editInput = useRef(null);
+  const [editText, setEditText] = useState("");
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
     setTimeout(() => editInput.current.focus(), 0);
   };
-
-  const [editText, setEditText] = useState("");
 
   const handleEditText = (event) => {
     const editingText = event.target.value;

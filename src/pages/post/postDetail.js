@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   CommentCountContext,
   PostContext,
@@ -11,30 +11,27 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 
 const PostDetail = () => {
+  const navigate = useNavigate();
   const { postId } = useParams();
   const [show, setShow] = useState(false);
+  const { postList, setPostList } = useContext(PostContext);
+  const post = postList[postId];
+  const { comment, setComment } = useContext(CommentContext);
+  const [savingComment, setSavingComment] = useState("");
+  const [postTitle, setPostTitle] = useState("");
+  const [postText, setPostText] = useState("");
+  const { commentCount, setCommentCount } = useContext(CommentCountContext);
+  const { viewCount } = useContext(ViewCountContext);
+  const commentEditInput = useRef(null);
+  const [editIndex, setEditIndex] = useState(null);
+
+
   const handleClose = () => setShow(false);
   const handleShow = () => {
     setShow(true);
     setPostTitle(post.title);
     setPostText(post.text);
   };
-
-  const { postList, setPostList } = useContext(PostContext);
-  const post = postList[postId];
-
-  const { comment, setComment } = useContext(CommentContext);
-  const [savingComment, setSavingComment] = useState("");
-
-  const navigate = useNavigate();
-
-  const [postTitle, setPostTitle] = useState("");
-  const [postText, setPostText] = useState("");
-
-  const { commentCount, setCommentCount } = useContext(CommentCountContext);
-  const { viewCount } = useContext(ViewCountContext);
-
-  const commentEditInput = useRef(null);
 
   useEffect(() => {
     localStorage.setItem("comment", JSON.stringify(comment || { comment: {} }));
@@ -89,8 +86,6 @@ const PostDetail = () => {
     });
   };
 
-  const [editIndex, setEditIndex] = useState(null);
-
   const handleEdit = (i) => {
     setEditIndex(i);
   };
@@ -98,18 +93,12 @@ const PostDetail = () => {
   const handleEditComplete = (i) => {
     setEditIndex(null);
     const copy = [...comment[postId]];
-
-    console.log(copy);
-
     const newComment = commentEditInput.current.value;
     copy.splice(i, 1, newComment);
     setComment((prevComments) => ({
       ...prevComments,
       [postId]: copy,
     }));
-    console.log("comment", comment);
-    console.log("copy", copy);
-    console.log("new", newComment);
   };
 
   if (!post) {

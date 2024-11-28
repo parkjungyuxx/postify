@@ -1,7 +1,6 @@
 import { UserContext } from "../../context.js";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useContext } from "react";
-import Button from "react-bootstrap/Button";
 import "../../css/common.css";
 import NavDropdown from "react-bootstrap/NavDropdown";
 
@@ -16,7 +15,6 @@ const Header = () => {
     }
   }, [user, navigate]);
 
-  //// 로그아웃을 위한 유저 이름 초기화 후 로그인 페이지로 이동
   const handleLogOut = () => {
     setUser("");
     navigate("/login");

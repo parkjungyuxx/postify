@@ -23,7 +23,7 @@ const Post = () => {
   const handleShow = () => setShow(true);
 
   const { user } = useContext(UserContext);
-  const { commentCount, setCommentCount } = useContext(CommentCountContext);
+  const { commentCount } = useContext(CommentCountContext);
 
   const [postTitle, setPostTitle] = useState("");
   const [postText, setPostText] = useState("");
@@ -231,7 +231,6 @@ const PageNation = ({ totalPages, setCurrentPage, currentPage }) => {
   const pagesPerGroup = 5;
   const [currentGroup, setCurrentGroup] = useState(1);
 
-  const totalGroup = Math.ceil(totalPages / pagesPerGroup);
   const startPage = (currentGroup - 1) * pagesPerGroup + 1;
   const endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
 

@@ -20,8 +20,6 @@ function App() {
     return savedPosts ? JSON.parse(savedPosts) : []; 
   });
 
-
-
   const [comment, setComment] = useState(() => {
     const savedComment = localStorage.getItem("comment");
     return savedComment ? JSON.parse(savedComment) : {};
