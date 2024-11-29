@@ -79,7 +79,7 @@ const Post = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 5;
-  const totalPages = Math.ceil(postList.length / postsPerPage);
+  const totalPages = Math.max(1, Math.ceil(postList.length / postsPerPage));
 
   const [currentPosts, setCurrentPosts] = useState([]);
 
