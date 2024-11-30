@@ -11,13 +11,12 @@ import {
 } from "./context.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-
 function App() {
   const [user, setUser] = useState("");
 
   const [postList, setPostList] = useState(() => {
     const savedPosts = localStorage.getItem("postList");
-    return savedPosts ? JSON.parse(savedPosts) : []; 
+    return savedPosts ? JSON.parse(savedPosts) : [];
   });
 
   const [comment, setComment] = useState(() => {

@@ -1,9 +1,12 @@
-const Calender = () => {
-    return (
-        <div>
-            calender임
-        </div>
-    )
-}
 
-export default Calender
+
+const Calender = () => {
+  
+
+  return (
+    <>
+    달력임</>
+  );
+};
+
+export default Calender;
