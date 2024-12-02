@@ -25,7 +25,6 @@ const PostDetail = () => {
   const commentEditInput = useRef(null);
   const [editIndex, setEditIndex] = useState(null);
 
-
   const handleClose = () => setShow(false);
   const handleShow = () => {
     setShow(true);
@@ -73,6 +72,7 @@ const PostDetail = () => {
     setComment((prevComments) => {
       const currentComments = [...(prevComments[postId] || [])];
       currentComments.splice(commentIndex, 1);
+      console.log(comment);
 
       setCommentCount((prevCounts) => ({
         ...prevCounts,

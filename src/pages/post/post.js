@@ -15,6 +15,7 @@ import {
   UserContext,
   CommentCountContext,
   ViewCountContext,
+  CommentContext,
 } from "../../context";
 
 const Post = () => {
@@ -28,6 +29,8 @@ const Post = () => {
   const [postTitle, setPostTitle] = useState("");
   const [postText, setPostText] = useState("");
   const { postList, setPostList } = useContext(PostContext);
+
+  const { comment, setComment } = useContext(CommentContext);
 
   useEffect(() => {
     localStorage.setItem(
@@ -58,6 +61,11 @@ const Post = () => {
     const copy = [...postList];
     copy.splice(postId, 1);
     setPostList(copy);
+
+
+    const commentCopy = { ...comment };
+    delete commentCopy[postId];
+    setComment(commentCopy);
 
     const startIndex = (currentPage - 1) * postsPerPage;
     const endIndex = Math.min(currentPage * postsPerPage, copy.length);
@@ -134,7 +142,7 @@ const Post = () => {
                   {" "}
                   <button
                     onClick={(event) => {
-                      deletePost(event);
+                      deletePost(event, i);
                     }}
                   >
                     삭제
